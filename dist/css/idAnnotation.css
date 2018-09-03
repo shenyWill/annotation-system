@@ -1,0 +1,204 @@
+body {
+  background-color: #f3f3f4; }
+
+.id-annotation {
+  margin: 20px;
+  width: 90%;
+  height: 700px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden; }
+  .id-annotation .id-title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    text-indent: 30px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
+    margin: 0; }
+  .id-annotation .image-area {
+    width: 50%;
+    height: 570px;
+    border: 1px solid #d2d2d2;
+    border-radius: 10px;
+    margin: 30px;
+    float: left; }
+  .id-annotation #canvas {
+    z-index: 999;
+    left: 0;
+    top: 0;
+    position: absolute; }
+  .id-annotation .image-area-operate {
+    height: 60px;
+    width: 100%;
+    background-color: #eeeeee;
+    font-size: 14px;
+    padding: 14px 10px;
+    box-sizing: border-box;
+    overflow: hidden; }
+    .id-annotation .image-area-operate .image-btn {
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #1cab8e;
+      color: #1cab8e;
+      border-radius: 10px;
+      display: inline-block;
+      text-align: center;
+      background-color: #fff;
+      cursor: pointer;
+      margin-right: 20px; }
+    .id-annotation .image-area-operate .last-image, .id-annotation .image-area-operate .next-image {
+      float: left;
+      width: 80px; }
+    .id-annotation .image-area-operate .cancel-check-all, .id-annotation .image-area-operate .cancel-check {
+      width: 100px;
+      float: right; }
+    .id-annotation .image-area-operate .prohibit {
+      color: #999999;
+      border-color: #999999;
+      cursor: not-allowed; }
+  .id-annotation .image-area-annotate {
+    width: 100%;
+    height: 510px;
+    background-color: #999999;
+    overflow: hidden;
+    position: relative; }
+    .id-annotation .image-area-annotate img {
+      max-width: 100%;
+      top: 0;
+      left: 0;
+      position: absolute; }
+  .id-annotation .form-area {
+    width: 43%;
+    height: 570px;
+    border-radius: 10px;
+    background-color: #eee;
+    float: left;
+    margin: 30px 0; }
+    .id-annotation .form-area .form-area-operate {
+      height: 60px;
+      width: 100%;
+      padding: 14px 10px;
+      box-sizing: border-box;
+      overflow: hidden;
+      font-size: 0; }
+    .id-annotation .form-area .operate-positive, .id-annotation .form-area .operate-opposite {
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #1cab8e;
+      display: inline-block;
+      text-align: center;
+      width: 100px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #1cab8e; }
+    .id-annotation .form-area .operate-positive {
+      border-radius: 10px 0 0 10px;
+      border-right: 0; }
+    .id-annotation .form-area .operate-opposite {
+      border-radius: 0 10px 10px 0; }
+    .id-annotation .form-area .active {
+      background-color: #1cab8e;
+      color: #fff; }
+    .id-annotation .form-area .form-area-tip {
+      font-size: 16px;
+      color: #333;
+      text-align: center;
+      font-weight: bold; }
+    .id-annotation .form-area .id-positive, .id-annotation .form-area .id-opposite {
+      width: 428px;
+      height: 270px;
+      margin: 0 auto;
+      display: none;
+      margin-top: 30px;
+      position: relative; }
+      .id-annotation .form-area .id-positive input, .id-annotation .form-area .id-opposite input {
+        border: 1px solid #1cab8e;
+        border-radius: 4px;
+        position: absolute;
+        text-indent: 10px; }
+    .id-annotation .form-area .id-positive {
+      background-image: url("../../img/id-positive.png"); }
+    .id-annotation .form-area .id-opposite {
+      background-image: url("../../img/id-opposite.png"); }
+    .id-annotation .form-area .show {
+      display: block; }
+    .id-annotation .form-area .id-name {
+      top: 42px;
+      left: 83px;
+      width: 155px; }
+    .id-annotation .form-area .id-sex {
+      top: 74px;
+      left: 83px;
+      width: 45px; }
+    .id-annotation .form-area .id-race {
+      top: 74px;
+      left: 194px;
+      width: 45px; }
+    .id-annotation .form-area .id-date {
+      position: absolute;
+      top: 103px;
+      left: 83px;
+      width: 156px;
+      height: 23px;
+      overflow: hidden;
+      color: #666;
+      border: 1px solid #1cab8e;
+      border-radius: 4px; }
+      .id-annotation .form-area .id-date input {
+        position: relative;
+        border: 0;
+        text-indent: 5px; }
+      .id-annotation .form-area .id-date .id-date-year {
+        width: 40px; }
+      .id-annotation .form-area .id-date .id-date-month {
+        width: 23px; }
+      .id-annotation .form-area .id-date .id-date-day {
+        width: 23px; }
+    .id-annotation .form-area .id-address {
+      position: absolute;
+      top: 139px;
+      left: 83px;
+      width: 156px;
+      height: 55px;
+      overflow: hidden;
+      color: #666;
+      border: 1px solid #1cab8e;
+      border-radius: 4px; }
+      .id-annotation .form-area .id-address input {
+        border: 0; }
+      .id-annotation .form-area .id-address .id-address-first {
+        top: 1px; }
+      .id-annotation .form-area .id-address .id-address-second {
+        top: 18px; }
+      .id-annotation .form-area .id-address .id-address-third {
+        top: 36px; }
+    .id-annotation .form-area .id-number {
+      top: 223px;
+      left: 148px;
+      width: 248px; }
+    .id-annotation .form-area .sign-organization {
+      top: 177px;
+      left: 171px;
+      width: 200px;
+      height: 20px; }
+    .id-annotation .form-area .effecitve-date {
+      top: 211px;
+      left: 171px;
+      width: 200px;
+      height: 20px; }
+    .id-annotation .form-area .upload-btn {
+      display: block;
+      width: 160px;
+      height: 40px;
+      line-height: 40px;
+      background-color: #1cab8e;
+      text-align: center;
+      color: #fff;
+      font-size: 17px;
+      margin: 40px auto;
+      border-radius: 10px;
+      cursor: pointer; }
+      .id-annotation .form-area .upload-btn:hover {
+        background-color: #178d75; }

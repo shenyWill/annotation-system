@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="src/index.css">
+  <script src="lib/jquery-3.3.1.min.js"></script>
+  <script src="src/index.js"></script>
+</head>
+
+<body>
+  <!-- 参数配置 -->
+  <div class="config">
+    <h2 class="config-title">
+      <span>属性参数配置</span>
+      <button class="config-form-btn">新增参数属性</button>
+    </h2>
+    <div class="config-check">
+        <label><input type="checkbox" name="configAttr" value="body" label="身体" checked>身体</label>&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" name="configAttr" value="number" label="身份证号" checked>身份证号</label> &nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" name="configAttr" value="face" label="人脸" checked>人脸</label> &nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" name="configAttr" value="address" label="住址" checked>住址</label> &nbsp;&nbsp;&nbsp;
+        <button class="config-btn">确定</button>
+    </div>
+  </div>
+
+  <!-- 标注信息展示 -->
+  <div class="annot-show">
+      <h2 class="annot-title">
+        <span>标注信息展示</span>
+      </h2>
+      <div class="annot-detail"></div>
+  </div>
+
+  <!-- 绘制区域 -->
+  <div class="people-box">
+    <img src="lib/timg.jpg" alt="" class="people-img">
+  </div>
+
+  <!-- 操作区域 -->
+  <div class="operation">
+    <button class="remove-btn">清除所有标记</button>&nbsp;&nbsp;&nbsp;
+    <button class="success-btn">标记完成，前往下一页</button>&nbsp;&nbsp;&nbsp;
+  </div>
+
+  <!-- 属性弹出框 -->
+  <div class="attr-mask">
+      <ul class="attr-nav"></ul>
+      <div class="attr-form">
+        <h5 class="attr-title">请输入对应信息：</h5>
+        <input type="text" class="attr-info">
+        <button class="attr-btn">确定</button>
+      </div>
+  </div>
+
+  <!-- 清除标记弹出框 -->
+  <div class="remove-mask">
+    <ul class="remove-nav">
+      <li class="remove-list">清除当前标记</li>
+    </ul>
+  </div>
+  
+</body>
+
+</html>

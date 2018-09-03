@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/css/idAnnotation.css">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src="../dist/js/idAnnotation.js"></script>
+</head>
+<body>
+    <div class="id-annotation">
+        <h2 class="id-title">图片标记</h2>
+        <div class="image-area">
+            <!-- 图片操作区 -->
+            <div class="image-area-operate">
+                <span class="last-image image-btn">上一张</span>
+                <span class="next-image image-btn prohibit">下一张</span>
+                <span class="cancel-check-all image-btn">取消全部锚点</span>
+                <span class="cancel-check image-btn">取消当前锚点</span>
+            </div>
+            <!-- 图片标记区 -->
+            <div class="image-area-annotate">
+                <img src="../img/1.jpg" alt="" class="annotate-image">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="form-area">
+            <div class="form-area-operate">
+                <span class="operate-positive active">身份证正面</span>
+                <span class="operate-opposite">身份证反面</span>
+            </div>
+            <p class="form-area-tip">请根据图片显示，把内容填写到对应区域的框内</p>
+            <!-- 身份证正面 -->
+            <div class="id-positive show">
+                <input type="text" class="id-name">
+                <input type="text" class="id-sex" maxlength="1">
+                <input type="text" class="id-race" maxlength="3">
+                <div class="id-date">
+                    <input type="text" class="id-date-year">年
+                    <input type="text" class="id-date-month">月
+                    <input type="text" class="id-date-day">日
+                </div>
+                <div class="id-address">
+                    <input type="text" class="id-address-first" placeholder="请输入对应地址第一行">
+                    <input type="text" class="id-address-second" placeholder="请输入对应地址第二行">
+                    <input type="text" class="id-address-third" placeholder="请输入对应地址第三行">
+                </div>
+                <input type="number" class="id-number">
+            </div>
+            <!-- 身份证反面 -->
+            <div class="id-opposite">
+                <input type="text" class="sign-organization">
+                <input type="text" class="effecitve-date">
+            </div>
+            <span class="upload-btn">确认上传</span>
+        </div>
+    </div>
+</body>
+</html>

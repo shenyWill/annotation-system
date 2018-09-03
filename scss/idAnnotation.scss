@@ -1,0 +1,253 @@
+body {
+    background-color: #f3f3f4;
+}
+.id-annotation{
+    margin: 20px;
+    width: 90%;
+    height: 700px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    .id-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        text-indent: 30px;
+        border-bottom: 1px solid #e5e5e5;
+        color: #333;
+        margin: 0;
+    }
+    .image-area {
+        width: 50%;
+        height: 570px;
+        border: 1px solid #d2d2d2;
+        border-radius: 10px;
+        margin: 30px;
+        float: left;
+    }
+    #canvas {
+        z-index: 999;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    .image-area-operate {
+        height: 60px;
+        width: 100%;
+        background-color: #eeeeee;
+        font-size: 14px;
+        padding: 14px 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        .image-btn {
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #1cab8e;
+            color: #1cab8e;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+        .last-image,.next-image {
+            float: left;
+            width: 80px;
+        }
+        .cancel-check-all,.cancel-check {
+            width: 100px;
+            float: right;
+        }
+        .prohibit {
+            color: #999999;
+            border-color: #999999;
+            cursor: not-allowed;
+        }
+    }
+    // 图片标注区域
+    .image-area-annotate {
+        width: 100%;
+        height: 510px;
+        background-color: #999999;
+        overflow: hidden;
+        position: relative;
+        img {
+            max-width: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+    }
+    .form-area {
+        width: 43%;
+        height: 570px;
+        border-radius: 10px;
+        background-color: #eee;
+        float: left;
+        margin: 30px 0;
+        .form-area-operate {
+            height: 60px;
+            width: 100%;
+            padding: 14px 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-size: 0;
+        }
+        .operate-positive,.operate-opposite {
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #1cab8e;
+            display: inline-block;
+            text-align: center;
+            width: 100px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #fff;
+            color: #1cab8e;
+        }
+        .operate-positive {
+            border-radius: 10px 0 0 10px;
+            border-right: 0;
+        }
+        .operate-opposite {
+            border-radius: 0 10px 10px 0;
+        }
+        .active {
+            background-color: #1cab8e;
+            color: #fff;
+        }
+        .form-area-tip {
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+        .id-positive,.id-opposite {
+            width: 428px;
+            height: 270px;
+            margin: 0 auto;
+            display: none;
+            margin-top: 30px;
+            position: relative;
+            input {
+                border: 1px solid #1cab8e;
+                border-radius: 4px;
+                position: absolute;
+                text-indent: 10px;
+            }
+        }
+        .id-positive {
+            background-image: url('../../img/id-positive.png');
+        }
+        .id-opposite {
+            background-image: url('../../img/id-opposite.png');
+        }
+        .show {
+            display: block;
+        }
+        .id-name {
+            top: 42px;
+            left: 83px;
+            width: 155px;
+        }
+        .id-sex {
+            top: 74px;
+            left: 83px;
+            width: 45px;
+        }
+        .id-race {
+            top: 74px;
+            left: 194px;
+            width: 45px;
+        }
+        // 出生日期
+        .id-date {
+            position: absolute;
+            top: 103px;
+            left: 83px;
+            width: 156px;
+            height: 23px;
+            overflow: hidden;
+            color: #666;
+            border: 1px solid #1cab8e;
+            border-radius: 4px;
+            input {
+                position: relative;
+                border: 0;
+                text-indent: 5px;
+            }
+            .id-date-year {
+                width: 40px;
+            }
+            .id-date-month {
+                width: 23px;
+            }
+            .id-date-day {
+                width: 23px;
+            }
+        }
+        // 住址
+        .id-address {
+            position: absolute;
+            top: 139px;
+            left: 83px;
+            width: 156px;
+            height: 55px;
+            overflow: hidden;
+            color: #666;
+            border: 1px solid #1cab8e;
+            border-radius: 4px;
+            input {
+                border: 0;
+            }
+            .id-address-first {
+                top: 1px;
+            }
+            .id-address-second {
+                top: 18px;
+            }
+            .id-address-third {
+                top: 36px;
+            }
+        }
+        // 身份证号
+        .id-number {
+            top: 223px;
+            left: 148px;
+            width: 248px;
+        }
+        // 签发机关
+        .sign-organization {
+            top: 177px;
+            left: 171px;
+            width: 200px;
+            height: 20px;
+        }
+        // 有效日期
+        .effecitve-date {
+            top: 211px;
+            left: 171px;
+            width: 200px;
+            height: 20px;
+        }
+        // 确认上传
+        .upload-btn {
+            display: block;
+            width: 160px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #1cab8e;
+            text-align: center;
+            color: #fff;
+            font-size: 17px;
+            margin: 40px auto;
+            border-radius: 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: #178d75;
+            }
+        }
+    }
+
+}
