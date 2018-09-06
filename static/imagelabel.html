@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="../dist/css/idAnnotation.css">
-    <script src="../lib/jquery-3.3.1.min.js"></script>
-    <script src="../js/idAnnotation.js"></script>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header">
 </head>
-<body>
+<body class="gray-bg">
     <div class="id-annotation">
         <h2 class="id-title">图片标记</h2>
         <div class="image-area">
@@ -17,12 +11,14 @@
             <div class="image-area-operate">
                 <span class="last-image image-btn">上一张</span>
                 <span class="next-image image-btn prohibit">下一张</span>
+                <span class="disable-check image-btn" style="width:80px">废除</span>
                 <span class="cancel-check-all image-btn">取消全部锚点</span>
                 <span class="cancel-check image-btn">取消当前锚点</span>
             </div>
             <!-- 图片标记区 -->
             <div class="image-area-annotate">
-                <img src="../img/1.jpg" alt="" class="annotate-image" id="">
+                <img th:src="${imagelabelInfo.imageUrl}"  alt="" class="annotate-image" th:id="${imagelabelInfo.id}">
+                <input type="text" inputId="">
                 <canvas id="canvas"></canvas>
             </div>
         </div>
@@ -36,7 +32,7 @@
             <div class="id-positive show">
                 <input type="text" class="id-name">
                 <input type="text" class="id-sex" maxlength="1">
-                <input type="text" class="id-race" maxlength="3">
+                <input type="text" class="id-race" maxlength="5" value="汉">
                 <div class="id-date">
                     <input type="text" class="id-date-year">年
                     <input type="text" class="id-date-month">月
@@ -47,7 +43,7 @@
                     <input type="text" class="id-address-second" placeholder="请输入对应地址第二行">
                     <input type="text" class="id-address-third" placeholder="请输入对应地址第三行">
                 </div>
-                <input type="text" class="id-number">
+                <input type="text" class="id-number" maxlength="18">
             </div>
             <!-- 身份证反面 -->
             <div class="id-opposite">
@@ -64,5 +60,8 @@
             <span class="upload-btn">确认上传</span>
         </div>
     </div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/subscriber/imagelabelInfo/area.js?v=1"></script>
+	<script type="text/javascript" src="/js/appjs/subscriber/imagelabelInfo/idAnnotation.js?v=1"></script>
 </body>
 </html>

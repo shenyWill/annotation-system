@@ -1,9 +1,10 @@
 body {
     background-color: #f3f3f4;
+    overflow: scroll;
 }
 .id-annotation{
     margin: 20px;
-    width: 90%;
+    min-width: 1200px;
     height: 700px;
     background-color: #fff;
     border-radius: 10px;
@@ -228,8 +229,29 @@ body {
         .effecitve-date {
             top: 211px;
             left: 171px;
-            width: 200px;
-            height: 20px;
+            width: 202px;
+            height: 24px;
+            position: absolute;
+            border: 1px solid #1cab8e;
+            border-radius: 4px;
+            box-sizing: border-box;
+            padding-left: 10px;
+            input {
+                border: 0;
+                display: inline-block;
+                width: 20px;
+                height: 17px;
+                position: relative;
+                padding: 0;
+                transform: translateY(-2px);
+                text-indent: 0;
+            }
+            .effecitve-date-first {
+                width: 30px;
+            }
+            .effecitve-date-fouth {
+                width: 30px;
+            }
         }
         // 确认上传
         .upload-btn {

@@ -1,9 +1,10 @@
 body {
-  background-color: #f3f3f4; }
+  background-color: #f3f3f4;
+  overflow: scroll; }
 
 .id-annotation {
   margin: 20px;
-  width: 90%;
+  min-width: 1200px;
   height: 700px;
   background-color: #fff;
   border-radius: 10px;
@@ -186,8 +187,26 @@ body {
     .id-annotation .form-area .effecitve-date {
       top: 211px;
       left: 171px;
-      width: 200px;
-      height: 20px; }
+      width: 202px;
+      height: 24px;
+      position: absolute;
+      border: 1px solid #1cab8e;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding-left: 10px; }
+      .id-annotation .form-area .effecitve-date input {
+        border: 0;
+        display: inline-block;
+        width: 20px;
+        height: 17px;
+        position: relative;
+        padding: 0;
+        transform: translateY(-2px);
+        text-indent: 0; }
+      .id-annotation .form-area .effecitve-date .effecitve-date-first {
+        width: 30px; }
+      .id-annotation .form-area .effecitve-date .effecitve-date-fouth {
+        width: 30px; }
     .id-annotation .form-area .upload-btn {
       display: block;
       width: 160px;
