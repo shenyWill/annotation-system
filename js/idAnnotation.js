@@ -8,6 +8,7 @@ $(function () {
         lastPoint: {},
         idPositive: {},
         idOpposite: {},
+        imageScale: 1,
         count: 0,
         init: function () {
             this.initCanvas();
@@ -156,10 +157,11 @@ $(function () {
                     _self.idPositive.addressSecond = $('.id-address-second').val();
                     _self.idPositive.addressThird = $('.id-address-third').val();
                     _self.idPositive.number = $('.id-number').val();
-                    _self.idPositive.firstPoint = _self.firstPoint
-                    _self.idPositive.secondPoint = _self.secondPoint
-                    _self.idPositive.thirdPoint = _self.thirdPoint
-                    _self.idPositive.lastPoint = _self.lastPoint;
+                    _self.idOpposite.firstPoint = _self.firstPoint
+                    _self.idOpposite.secondPoint = _self.secondPoint
+                    _self.idOpposite.thirdPoint = _self.thirdPoint
+                    _self.idOpposite.lastPoint = _self.lastPoint;
+                    
                     for (var item in _self.idPositive) {
                         if (!_self.idPositive[item] && item != "addressSecond" && item != "addressThird") {
                         	
@@ -173,6 +175,14 @@ $(function () {
                             }
                         }
                     }
+                    _self.idPositive.firstPoint.x = _self.firstPoint.x * _self.imageScale;
+                    _self.idPositive.firstPoint.y = _self.firstPoint.y * _self.imageScale;
+                    _self.idPositive.secondPoint.x = _self.secondPoint.x * _self.imageScale;
+                    _self.idPositive.secondPoint.y = _self.secondPoint.y * _self.imageScale;
+                    _self.idPositive.thirdPoint.x = _self.thirdPoint.x * _self.imageScale;
+                    _self.idPositive.thirdPoint.y = _self.thirdPoint.y * _self.imageScale;
+                    _self.idPositive.lastPoint.x = _self.lastPoint.x * _self.imageScale;
+                    _self.idPositive.lastPoint.y = _self.lastPoint.y * _self.imageScale;
                     var data = {
                         id: id,
                         temp1: _self.idPositive
@@ -202,6 +212,14 @@ $(function () {
                             }
                         }
                     }
+                    _self.idPositive.firstPoint.x = _self.firstPoint.x * _self.imageScale;
+                    _self.idPositive.firstPoint.y = _self.firstPoint.y * _self.imageScale;
+                    _self.idPositive.secondPoint.x = _self.secondPoint.x * _self.imageScale;
+                    _self.idPositive.secondPoint.y = _self.secondPoint.y * _self.imageScale;
+                    _self.idPositive.thirdPoint.x = _self.thirdPoint.x * _self.imageScale;
+                    _self.idPositive.thirdPoint.y = _self.thirdPoint.y * _self.imageScale;
+                    _self.idPositive.lastPoint.x = _self.lastPoint.x * _self.imageScale;
+                    _self.idPositive.lastPoint.y = _self.lastPoint.y * _self.imageScale;
                     var data = {
                         id: id,
                         temp1: _self.idOpposite
@@ -233,6 +251,11 @@ $(function () {
                             _self.thirdPoint = {};
                             _self.lastPoint = {};
                             _self.count = 0;
+                            if (img.width > $('.annotate-image').width()) {
+                                _self.imageScale = img.width / $('.annotate-image').width();
+                            } else {
+                                _self.imageScale = 1;
+                            }
                         }
                     } else {
                         alert(data.msg);
@@ -268,6 +291,11 @@ $(function () {
                                 _self.thirdPoint = {};
                                 _self.lastPoint = {};
                                 _self.count = 0;
+                                if (img.width > $('.annotate-image').width()) {
+                                    _self.imageScale = img.width / $('.annotate-image').width();
+                                } else {
+                                    _self.imageScale = 1;
+                                }
                             }
                         } else {
                             alert(data.msg);
@@ -353,11 +381,20 @@ $(function () {
                             $('.annotate-image').attr('id', data.id);
                             _self.initCanvas();
                             _self.resetForm(data.data);
+                            if (img.width > $('.annotate-image').width()) {
+                                _self.imageScale = img.width / $('.annotate-image').width();
+                            } else {
+                                _self.imageScale = 1;
+                            }
                             if (data.data.firstPoint) {
-                            	_self.firstPoint = data.data.firstPoint;
-                                _self.secondPoint = data.data.secondPoint;
-                                _self.thirdPoint = data.data.thirdPoint;
-                                _self.lastPoint = data.data.lastPoint;
+                            	_self.firstPoint.x = data.data.firstPoint.x / _self.imageScale;
+                            	_self.firstPoint.y = data.data.firstPoint.y / _self.imageScale;
+                                _self.secondPoint.x = data.data.secondPoint.x / _self.imageScale;
+                                _self.secondPoint.y = data.data.secondPoint.y / _self.imageScale;
+                                _self.thirdPoint.x = data.data.thirdPoint.x / _self.imageScale;
+                                _self.thirdPoint.y = data.data.thirdPoint.y / _self.imageScale;
+                                _self.lastPoint.x = data.data.lastPoint.x / _self.imageScale;
+                                _self.lastPoint.y = data.data.lastPoint.y / _self.imageScale;
                                 _self.resetCanvas();
                             } else {
                             	_self.count = 0;
