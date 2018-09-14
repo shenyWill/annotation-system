@@ -1,0 +1,105 @@
+body {
+    background-color: #f3f3f4;
+    overflow: scroll;
+}
+.id-annotation{
+    margin: 20px;
+    min-width: 1200px;
+    height: 700px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    .id-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        text-indent: 30px;
+        border-bottom: 1px solid #e5e5e5;
+        color: #333;
+        margin: 0;
+    }
+    .image-area {
+        width: 50%;
+        height: 570px;
+        border: 1px solid #d2d2d2;
+        border-radius: 10px;
+        margin: 30px;
+        float: left;
+    }
+    #canvas {
+        z-index: 999;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    .image-area-operate {
+        height: 60px;
+        width: 100%;
+        background-color: #eeeeee;
+        font-size: 14px;
+        padding: 14px 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        .image-btn {
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #1cab8e;
+            color: #1cab8e;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+        .last-image,.next-image {
+            float: left;
+            width: 80px;
+        }
+        .cancel-check-all,.cancel-check {
+            width: 100px;
+            float: right;
+        }
+    }
+    // 图片标注区域
+    .image-area-annotate {
+        width: 100%;
+        height: 510px;
+        background-color: #999999;
+        overflow: hidden;
+        position: relative;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+    }
+    .form-area {
+        width: 43%;
+        height: 570px;
+        border-radius: 10px;
+        background-color: #eee;
+        float: left;
+        margin: 30px 0;
+        // 确认上传
+        .upload-btn {
+            display: block;
+            width: 160px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #1cab8e;
+            text-align: center;
+            color: #fff;
+            font-size: 17px;
+            margin: 40px auto;
+            border-radius: 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: #178d75;
+            }
+        }
+    }
+
+}
