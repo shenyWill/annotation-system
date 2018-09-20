@@ -88,6 +88,21 @@ body {
         background-color: #eee;
         float: left;
         margin: 30px 0;
+        position: relative;
+        .form-title {
+            height: 60px;
+            width: 100%;
+            background-color: #eeeeee;
+            font-size: 14px;
+            padding: 14px 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: #1cab8e;
+            .ordinary-invoice {
+                margin: 0;
+                margin-top: 2px;
+            }
+        }
         // 确认上传
         .upload-btn {
             display: block;
@@ -98,15 +113,17 @@ body {
             text-align: center;
             color: #fff;
             font-size: 17px;
-            margin: 40px auto;
             border-radius: 10px;
+            position: absolute;
+            bottom: 20px;
+            left: 200px;
             cursor: pointer;
             &:hover {
                 background-color: #178d75;
             }
         }
         .form-area-content {
-            width: 339px;
+            width: 400px;
             height: 40px;
             margin: 20px auto;
             position: relative;
@@ -130,11 +147,16 @@ body {
         .content-text {
             display: inline-block;
             height: 34px;
-            width: 317px;
+            width: 250px;
             margin-left: 19px;
             border: 1px solid #32bea6;
             text-indent: 30px;
-            
+        }
+        .content-select {
+            height: 34px;
+            border: 1px solid #32bea6;
+            margin-left: 5px;
+            width: 120px;
         }
     }
 

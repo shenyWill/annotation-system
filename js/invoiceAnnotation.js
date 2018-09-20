@@ -8,6 +8,7 @@ $(function(){
         count: 0,
         selectIndex: -1,
         imageScale: 1,
+        selectArr: [{key:'invoiceCode', value: '发票代码'},{key:'invoiceNum', value: '发票号码'},{key:'invoiceDate', value: '开票日期'},{key:'totalMoney', value: '合计金额'},{key:'totalInvoiceMoney', value: '合计税额'},{key:'allMoney', value: '价税合计'},{key:'checkCode', value: '校验码'}],
         init: function(){
             this.initCanvas();
             this.drawFrame();
@@ -17,6 +18,20 @@ $(function(){
             this.upload();
             this.deleteAllFrame();
             this.nextImage();
+            this.lastImage();
+            this.invoiceType();
+        },
+        // 发票类型
+        invoiceType: function() {
+            var _self = this;
+            $('.ordinary-invoice').off('change')
+            $('.ordinary-invoice').on('change',function(){
+                if($(this).prop('checked')){
+                    _self.selectArr.pop();
+                }else {
+                    _self.selectArr.push({key:'checkCode', value: '校验码'});
+                }
+            })
         },
         // 初始化canvas
         initCanvas: function(){
@@ -24,6 +39,33 @@ $(function(){
             this.canvas.width = $('.annotate-image').width();
             this.canvas.height = $('.annotate-image').height();
             this.canvas =new fabric.Canvas('canvas');
+        },
+        // 初始化image
+        initImage: function() {
+            var _self = this;
+            $.ajax({
+                url: '/subscriber/imagelabelInfoInvoice/imagelabel',
+                contentType: 'application/json',
+                data: JSON.stringify({}),
+                type: 'post',
+                success: function(data){
+                    var img = new Image();
+                    img.src = data.imageUrl;
+                    img.onload = function(){
+                        _self.scaleImage(img, data.id); 
+                        _self.initCanvas();
+                    }
+                }
+            })
+        },
+        // 转化image扩大和图片
+        scaleImage: function(img, id){
+        	$('.annotate-image').attr('src', img.src);
+            $('.annotate-image').attr('id', id);
+            var scaleHeight = img.height / $('.annotate-image').height();
+            var scaleWidth = img.width / $('.annotate-image').width();
+            var scaleMax = scaleHeight > scaleWidth ? scaleHeight : scaleWidth;
+            this.imageScale = scaleMax > 1 ? scaleMax : 1;
         },
         // 画框
         drawFrame: function(){
@@ -75,7 +117,7 @@ $(function(){
         },
         // 初始化内容框
         initContent: function() {
-            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="text" class="content-text"></div>');
+            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="text" class="content-text"><select class="content-select"></select></div>');
         },
         // 画不规则矩形
         drawRect: function(pointArray) {
@@ -108,6 +150,10 @@ $(function(){
             var $content = this.$content.clone();
             $content.find('.content-index').html(this.canvas.getObjects().length);
             $('.upload-btn').before($content);
+            this.selectArr.forEach(function(value){
+                var $option = $('<option value="' + value.key + '">' + value.value + '</option>');
+                $content.find('.content-select').append($option);
+            })
             $content.find('.content-text').focus();
         },
         // 选择某个框
@@ -195,8 +241,17 @@ $(function(){
             $('.upload-btn').on('click', function(){
                 var objects = _self.canvas.getObjects();
                 _self.invoiceArray = [];
+                var typeArr = [];
+                if(objects.length < 1) {
+                    alert('请标注内容后提交！');
+                    return false;
+                }
+                if(_self.count != 0) {
+                    alert('请将标注线连成框后再提交！');
+                    return false;
+                }
                 objects.forEach(function(item){
-                    var invoiceObj = {pointArr:[], content:''};
+                    var invoiceObj = {pointArr:[], content:'', type:''};
                     invoiceObj.pointArr[0] = {x: item.path[0][1] * _self.imageScale, y: item.path[0][2] * _self.imageScale};
                     invoiceObj.pointArr[1] = {x: item.path[1][1] * _self.imageScale, y: item.path[1][2] * _self.imageScale};
                     invoiceObj.pointArr[2] = {x: item.path[2][1] * _self.imageScale, y: item.path[2][2] * _self.imageScale};
@@ -205,8 +260,45 @@ $(function(){
                 });
                 _self.invoiceArray.forEach(function(item, index){
                     item.content = $('.form-area-content').eq(index).find('.content-text').val();
+                    item.type = $('.form-area-content').eq(index).find('.content-select').val();
+                    typeArr.push(item.type);
                 })
-                _self.reset();              
+                var id = $('.annotate-image').attr("id");
+                var invoiceDate = {id: id, temp1:_self.invoiceArray};
+                // 判断是否有重复
+                for(var i=0; i < typeArr.length; i++){
+                    if(JSON.stringify(typeArr).match(new RegExp(typeArr[i], 'g')).length > 1){
+                        alert('请不要选择相同类型！');
+                        return false;
+                    }
+                }
+                if(typeArr.length < _self.selectArr.length) {
+                    alert('请标注齐全再上传!');
+                    return false;
+                }
+                console.log(invoiceDate)
+                _self.handleAjax(invoiceDate);
+            })
+        },
+        handleAjax: function (data) {
+            var _self = this;
+            $.ajax({
+                url: '/subscriber/imagelabelInfoInvoice/saveLabelImage',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                type: 'post',
+                success: function (data) {
+                    if (Number(data.code) === 0) {
+                        var img = new Image();
+                        img.src = data.imageUrl;
+                        img.onload = function () {
+                        	_self.scaleImage(img, data.id);
+                        	_self.reset();
+                        }
+                    } else {
+                        alert(data.msg);
+                    }
+                }
             })
         },
         // 下一张
@@ -222,32 +314,35 @@ $(function(){
                 _self.handleImage(data);
             })
         },
+        // 上一张
+        lastImage: function() {
+            var _self = this;
+            $('.last-image').off('click');
+            $('.last-image').on('click', function () {
+                var id = $('.annotate-image').attr('id');
+                var data = {
+                    id: id,
+                    recordType: 0
+                };
+                _self.handleImage(data);
+            })
+        },
         // 改变张数
         handleImage: function(data) {
             var _self = this;
             $.ajax({
-                url: '/subscriber/imagelabelInfo/getImageRecord',
+                url: '/subscriber/imagelabelInfoInvoice/getImageRecord',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 type: 'post',
-                error: function(data) {
-                    if(Number(data.code) !== 0) {
-                        _self.reset();
-                        data = [
-                            {pointArr:[{x: 217, y:76},{x:281, y:74},{x:292, y:146}, {x:237, y:147}], content: 1},
-                            {pointArr:[{x: 337, y:72},{x:429, y:85},{x:430, y:163}, {x:312, y:172}], content: 2},
-                            {pointArr:[{x: 515, y:69},{x:573, y:79},{x:554, y:168}, {x:463, y:190}], content: 3}
-                        ];
+                success: function(data) {
+                    if(Number(data.code) === 0) {
                         var img = new Image();
-                        img.src = '../img/4.jpg';
+                        img.src = data.imageUrl;
                         img.onload = function() {
-                            var scaleHeight = img.height / $('.annotate-image').height();
-                            var scaleWidth = img.width / $('.annotate-image').width();
-                            var scaleMax = scaleHeight > scaleWidth ? scaleHeight : scaleWidth;
-                            _self.imageScale = scaleMax > 1 ? scaleMax : 1;
-                            $('.annotate-image').attr('src', img.src);
-                            $('.annotate-image').attr('id', data.id);
-                            data.forEach(function(item){
+                            _self.scaleImage(img, data.id);
+                            _self.reset();
+                            data.data.forEach(function(item){
                                 var newPointArr=[];
                                 item.pointArr.forEach(function(arrObj){
                                     newPointArr.push({x: arrObj.x / _self.imageScale, y: arrObj.y / _self.imageScale});
@@ -255,6 +350,7 @@ $(function(){
                                 _self.drawRect(newPointArr);
                                 _self.drawNumCircle(newPointArr);
                                 $('.form-area-content').last().find('.content-text').val(item.content);
+                                $('.form-area-content').last().find('.content-select').val(item.type);
                             })
                         }
                     }else {
@@ -266,4 +362,5 @@ $(function(){
 
     }
     invoiceAnnotation.init();
+    invoiceAnnotation.initImage();
 })
