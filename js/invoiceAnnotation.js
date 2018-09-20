@@ -72,6 +72,17 @@ $(function(){
             var _self = this;
             $('canvas').off('click');
             $('canvas').on('click', function(event){
+            	var frameNum = 0;
+            	_self.canvas.getObjects().forEach(function(item){
+            		if(item.path) {
+            			frameNum += 1;
+            		}
+            	})
+            	console.log(frameNum);
+            	if (frameNum >= _self.selectArr.length) {
+            		layer.msg("框达到上限！");
+            		return false;
+            	}
                 _self.pointArray[_self.count] = {x: event.offsetX, y: event.offsetY};
                 _self.drawLine();
                 _self.count++;
@@ -117,7 +128,7 @@ $(function(){
         },
         // 初始化内容框
         initContent: function() {
-            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="text" class="content-text"><select class="content-select"></select></div>');
+            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="number" class="content-text"><select class="content-select"></select></div>');
         },
         // 画不规则矩形
         drawRect: function(pointArray) {
