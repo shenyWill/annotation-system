@@ -165,11 +165,16 @@ $(function(){
         },
         // 增加填充内容框
         drawContent: function() {
+            var _self = this;
             var $content = this.$content.clone();
             $content.find('.content-index').html(this.canvas.getObjects().length);
             $('.upload-btn').before($content);
-            this.selectArr.forEach(function(value){
-                var $option = $('<option value="' + value.key + '">' + value.value + '</option>');
+            this.selectArr.forEach(function(value, index){
+                if (index == _self.canvas.getObjects().length) {
+                    var $option = $('<option value="' + value.key + '" selected="selected">' + value.value + '</option>');
+                }else {
+                    var $option = $('<option value="' + value.key + '">' + value.value + '</option>');
+                }
                 $content.find('.content-select').append($option);
             })
             $content.find('.content-text').focus();
