@@ -8,7 +8,8 @@ $(function(){
         count: 0,
         selectIndex: -1,
         imageScale: 1,
-        selectArr: [{key:'invoiceCode', value: '发票代码'},{key:'invoiceNum', value: '发票号码'},{key:'invoiceDate', value: '开票日期'},{key:'totalMoney', value: '合计金额'},{key:'totalInvoiceMoney', value: '合计税额'},{key:'allMoney', value: '价税合计'},{key:'checkCode', value: '校验码'}],
+//        selectArr: [{key:'invoiceCode', value: '发票代码'},{key:'invoiceNum', value: '发票号码'},{key:'invoiceDate', value: '开票日期'},{key:'totalMoney', value: '合计金额'},{key:'totalInvoiceMoney', value: '合计税额'},{key:'allMoney', value: '价税合计'},{key:'checkCode', value: '校验码'}],
+        selectArr: [{key:'openDate', value: '开票日期'},{key:'invoiceCode', value: '发票代码'},{key:'invoiceNum', value: '发票号码'},{key:'carSmallMoney', value: '车价合计小写'},{key:'carBigMoney', value: '车价合计大写'}],
         init: function(){
             this.initCanvas();
             this.drawFrame();
@@ -20,6 +21,8 @@ $(function(){
             this.nextImage();
             this.lastImage();
             this.invoiceType();
+            this.imageTranstion();
+            this.disableCheck();
         },
         // 发票类型
         invoiceType: function() {
@@ -53,7 +56,8 @@ $(function(){
                     img.src = data.imageUrl;
                     img.onload = function(){
                         _self.scaleImage(img, data.id); 
-                        _self.initCanvas();
+                        _self.reset();
+                        
                     }
                 }
             })
@@ -61,11 +65,14 @@ $(function(){
         // 转化image扩大和图片
         scaleImage: function(img, id){
         	$('.annotate-image').attr('src', img.src);
+        	$('.show-annotate-image').attr('src', img.src);
             $('.annotate-image').attr('id', id);
-            var scaleHeight = img.height / $('.annotate-image').height();
+            // var scaleHeight = img.height / $('.annotate-image').height();
             var scaleWidth = img.width / $('.annotate-image').width();
-            var scaleMax = scaleHeight > scaleWidth ? scaleHeight : scaleWidth;
-            this.imageScale = scaleMax > 1 ? scaleMax : 1;
+            // var scaleMax = scaleHeight > scaleWidth ? scaleHeight : scaleWidth;
+            this.imageScale = scaleWidth > 1 ? scaleWidth : 1;
+            $('.form-area').css({height: $('.annotate-image').height() + 60});
+            $('.invoice-annotation').css({height: $('.annotate-image').height() + 160});
         },
         // 画框
         drawFrame: function(){
@@ -353,6 +360,9 @@ $(function(){
                         img.onload = function() {
                             _self.scaleImage(img, data.id);
                             _self.reset();
+                            if(!data.data){
+                            	return false;
+                            }
                             data.data.forEach(function(item){
                                 var newPointArr=[];
                                 item.pointArr.forEach(function(arrObj){
@@ -369,9 +379,67 @@ $(function(){
                     }
                 }
             })
-        }
+        },
+     // 旋转
+        imageTranstion: function(){
+        	$('.show-annotate-image').off('click');
+        	$('.show-annotate-image').on('click', function() {
+        		var deg=eval('get'+$(this).css('transform'));//构造getmatrix函数,返回上次旋转度数  
+        	     var step=45;//每次旋转多少度  
+        	     $(this).css({'transform':'rotate('+(deg+step)%360+'deg)'});  
+        	})
+        },
+     // 废除本张，跳转下一张
+        disableCheck: function() {
+        	var _self = this;
+        	$('.disable-check').off('click');
+        	$('.disable-check').on('click', function () {
+        		var sureBtn = confirm('确认废除么？');
+        		if(!sureBtn) {
+        			return;
+        		}
+        		var id = $('.annotate-image').attr('id');
+        		$.ajax({
+                    url: '/subscriber/imagelabelInfoInvoice/delLabelImage',
+                    contentType: 'application/json',
+                    data: JSON.stringify({id: id}),
+                    type: 'post',
+                    success: function (data) {
+                    	if (Number(data.code) === 0) {
+                            var img = new Image();
+                            img.src = data.imageUrl;
+                            img.onload = function () {
+                            	_self.scaleImage(img, data.id);
+                            	_self.reset();
+                            }
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                })
+        	})
+        },
 
     }
     invoiceAnnotation.init();
     invoiceAnnotation.initImage();
 })
+
+
+
+function getmatrix(a,b,c,d,e,f){  
+    var aa=Math.round(180*Math.asin(a)/ Math.PI);  
+    var bb=Math.round(180*Math.acos(b)/ Math.PI);  
+    var cc=Math.round(180*Math.asin(c)/ Math.PI);  
+    var dd=Math.round(180*Math.acos(d)/ Math.PI);  
+    var deg=0;  
+    if(aa==bb||-aa==bb){  
+        deg=dd;  
+    }else if(-aa+bb==180){  
+        deg=180+cc;  
+    }else if(aa+bb==180){  
+        deg=360-cc||360-dd;  
+    }  
+    return deg>=360?0:deg;  
+    //return (aa+','+bb+','+cc+','+dd);  
+}
