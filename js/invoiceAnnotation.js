@@ -23,6 +23,8 @@ $(function(){
             this.invoiceType();
             this.imageTranstion();
             this.disableCheck();
+            this.drawMoveFrame();
+            this.frameType();
         },
         // 发票类型
         invoiceType: function() {
@@ -34,6 +36,16 @@ $(function(){
                 }else {
                     _self.selectArr.push({key:'checkCode', value: '校验码'});
                 }
+            })
+        },
+        frameType: function() {
+            var _self = this;
+            $('.check-frame').off('change');
+            $('.check-frame').on('change', function(){
+                if(_self.count !=0){
+                    alert('请标完当前选框，再切换选框类型');
+                    $(this).prop('checked', false);
+                };
             })
         },
         // 初始化canvas
@@ -79,13 +91,14 @@ $(function(){
             var _self = this;
             $('canvas').off('click');
             $('canvas').on('click', function(event){
+                if($('.check-frame').prop('checked')) return;
             	var frameNum = 0;
             	_self.canvas.getObjects().forEach(function(item){
             		if(item.path) {
             			frameNum += 1;
             		}
             	})
-            	console.log(frameNum);
+            	console.log(_self.count);
             	if (frameNum >= _self.selectArr.length) {
             		layer.msg("框达到上限！");
             		return false;
@@ -93,6 +106,39 @@ $(function(){
                 _self.pointArray[_self.count] = {x: event.offsetX, y: event.offsetY};
                 _self.drawLine();
                 _self.count++;
+            })
+        },
+        // 移动鼠标画框
+        drawMoveFrame: function(){
+            var _self = this;
+            $('.upper-canvas').off('mousedown');
+            $('.upper-canvas').on('mousedown', function(e){
+                if (e.which == 3) {
+                    return
+                }
+                if(!$('.check-frame').prop('checked')) return;
+                var frameNum = 0;
+            	_self.canvas.getObjects().forEach(function(item){
+            		if(item.path) {
+            			frameNum += 1;
+            		}
+            	})
+            	console.log(_self.count);
+            	if (frameNum >= _self.selectArr.length) {
+            		layer.msg("框达到上限！");
+            		return false;
+            	}
+                _self.pointArray[0] = {x: e.offsetX, y: e.offsetY};
+                $(document).bind('mouseup', function (event) {
+                    $('canvas').unbind('mousemove');
+                    $('.tempDiv').unbind('mousemove');
+                    $(document).unbind('mouseup');
+                    _self.pointArray[1] = {x: e.offsetX, y: event.offsetY};
+                    _self.pointArray[2] = {x: event.offsetX, y: event.offsetY};
+                    _self.pointArray[3] = {x: event.offsetX, y: e.offsetY};
+                    _self.drawRect(_self.pointArray);
+                    _self.drawNumCircle(_self.pointArray);
+                })
             })
         },
         // 画线
@@ -135,7 +181,7 @@ $(function(){
         },
         // 初始化内容框
         initContent: function() {
-            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="number" class="content-text"><select class="content-select"></select></div>');
+            this.$content = $('<div class="form-area-content"><span class="content-index"></span><input type="text" class="content-text"><select class="content-select"></select></div>');
         },
         // 画不规则矩形
         drawRect: function(pointArray) {
@@ -170,7 +216,7 @@ $(function(){
             $content.find('.content-index').html(this.canvas.getObjects().length);
             $('.upload-btn').before($content);
             this.selectArr.forEach(function(value, index){
-                if (index == _self.canvas.getObjects().length) {
+                if (index+1 == _self.canvas.getObjects().length) {
                     var $option = $('<option value="' + value.key + '" selected="selected">' + value.value + '</option>');
                 }else {
                     var $option = $('<option value="' + value.key + '">' + value.value + '</option>');
