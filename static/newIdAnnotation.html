@@ -1,0 +1,50 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/css/invoiceAnnotation.css">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src="../lib/fabric.js"></script>
+    <script src="../js/newIdAnnotation.js"></script>
+</head>
+<body>
+    <div class="invoice-annotation">
+        <h2 class="id-title">图片标记</h2>
+        <div class="image-area">
+            <!-- 图片操作区 -->
+            <div class="image-area-operate">
+                <span class="last-image image-btn">上一张</span>
+                <span class="next-image image-btn prohibit">下一张</span>
+                <span class="disable-check image-btn" style="width:80px">废除</span>
+                <input type="checkbox" name="check-frame" class="check-frame" id="check-frame">
+                <label for="check-frame">是否标框</label>
+                <span class="cancel-check-all image-btn">取消全部锚框</span>
+                <span class="cancel-check image-btn">取消当前锚框</span>
+            </div>
+            <!-- 图片标记区 -->
+            <div class="image-area-annotate">
+                <!-- <img src="" alt="" class="annotate-image" id="" th:type="${type}"> -->
+                <img src="../img/6.png" alt="" class="annotate-image" id="">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="form-area">
+            <div class="form-title">
+                <input type="checkbox" name="ordinary-invoice" class="ordinary-invoice" id="ordinary-invoice">
+                <label for="ordinary-invoice">是否为身份证反面</label>
+            </div>
+            <span class="upload-btn">确认上传</span>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
