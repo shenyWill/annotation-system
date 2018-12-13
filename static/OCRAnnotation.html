@@ -11,6 +11,11 @@
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/fabric.js"></script>
     <script src="../js/OCRAnnotation.js"></script>
+    <style>
+        .canvas-container {
+            position: absolute !important;
+        }
+    </style>
 </head>
 <body>
     <div class="invoice-annotation">
@@ -31,6 +36,7 @@
                 <!-- <img src="" alt="" class="annotate-image" id="" th:type="${type}"> -->
                 <img src="../img/6.png" alt="" class="annotate-image" id="" style="max-height: 100%">
                 <canvas id="canvas"></canvas>
+                <canvas id="newCanvas"></canvas>
             </div>
         </div>
         <div class="form-area">

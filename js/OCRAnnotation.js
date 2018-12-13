@@ -1,6 +1,7 @@
 $(function(){
     var invoiceAnnotation = {
         canvas: '',
+        newCanvas: '',
         invoiceArray:[],
         pointArray:[],
         firstLine:'',
@@ -10,12 +11,16 @@ $(function(){
         imageScale: 1,
         IDNum: '',
         selectArr: [
-                    {key:'border1', value: '备用框1'},
-                    {key:'border2', value: '备用框2'},
-                    {key:'border3', value: '备用框3'}
+                    {key:'paper', value: '纸张'},
+                    {key:'eyeFirst', value: '眼睛一'},
+                    {key:'eyeSecond', value: '眼睛二'},
+                    {key:'handFirst', value: '手一'},
+                    {key:'handSecond', value: '手二'},
+                    {key:'mouth', value: '嘴巴'}
                    ],
         init: function(){
             this.initCanvas();
+            this.initNewCanvas();
             this.drawFrame();
             this.selectFrame();
             this.initContent();
@@ -88,6 +93,16 @@ $(function(){
                             {key:'addressSecond', value: '住址第二行'},{key:'addressThird', value: '住址第三行'}
                            ];
                     }
+                    if(data.labelType == 5) {
+                    	_self.selectArr =  [
+                            {key:'paper', value: '纸张'},
+                            {key:'eyeFirst', value: '眼睛一'},
+                            {key:'eyeSecond', value: '眼睛二'},
+                            {key:'handFirst', value: '手一'},
+                            {key:'handSecond', value: '手二'},
+                            {key:'mouth', value: '嘴巴'}
+                           ];
+                    }
                     _self.init();
                     _self.initImage();
                 }
@@ -100,6 +115,13 @@ $(function(){
             this.canvas.width = $('.annotate-image').width();
             this.canvas.height = $('.annotate-image').height();
             this.canvas =new fabric.Canvas('canvas');
+        },
+        // 初始化newCanvas
+        initNewCanvas: function(){
+            this.newCanvas = document.getElementById('newCanvas');
+            this.newCanvas.width = $('.annotate-image').width();
+            this.newCanvas.height = $('.annotate-image').height();
+            this.newCanvas =new fabric.Canvas('newCanvas');
         },
         // 初始化image
         initImage: function() {
@@ -245,14 +267,33 @@ $(function(){
         },
         // 画不规则矩形
         drawRect: function(pointArray) {
+            var smallX=9999999,smallY=9999999,bigX=-9999999,bigY=-9999999;
+            pointArray.forEach(function(item) {
+                smallX > item.x && (smallX = item.x);
+                smallY > item.y && (smallY = item.y);
+                bigX < item.x && (bigX = item.x);
+                bigY < item.y && (bigY = item.y);
+            });
+            var newPointArr = [{x:smallX,y:smallY},{x:bigX,y:smallY},{x:bigX,y:bigY},{x:smallX,y:bigY}];
+            // console.log(pointArray)
+            // console.log(newPointArr)
+            var newFrameObj = new fabric.Path(
+                'M ' + newPointArr[0].x + ' ' + newPointArr[0].y + 
+                'L ' + newPointArr[1].x + ' ' + newPointArr[1].y + 
+                'L ' + newPointArr[2].x + ' ' + newPointArr[2].y + 
+                'L ' + newPointArr[3].x + ' ' + newPointArr[3].y + 
+                ' z'); 
             var frameObj = new fabric.Path(
                 'M ' + pointArray[0].x + ' ' + pointArray[0].y + 
                 'L ' + pointArray[1].x + ' ' + pointArray[1].y + 
                 'L ' + pointArray[2].x + ' ' + pointArray[2].y + 
                 'L ' + pointArray[3].x + ' ' + pointArray[3].y + 
-                ' z'); 
+                ' z');
+            newFrameObj.set('fill',null);
+            newFrameObj.set({ strokeWidth: 2, stroke: '#1cab8e' });
             frameObj.set('fill',null);
-            frameObj.set({ strokeWidth: 2, stroke: '#0066ff' });
+            frameObj.set({ strokeWidth: 1, stroke: '#0066ff' });
+            this.newCanvas.add(newFrameObj);
             this.canvas.add(frameObj);
             frameObj.lockMovementX = true
             frameObj.lockMovementY = true
@@ -283,13 +324,6 @@ $(function(){
             this.selectArr.forEach(function(value, index){
                 if (index+1 == _self.canvas.getObjects().length) {
                     var $option = $('<option value="' + value.key + '" selected="selected">' + value.value + '</option>');
-                    if (value.value == '出生日期') {
-                        $content.find('.content-text').val(_self.IDNum.substring(6,10) + '-' + _self.IDNum.substring(10,12) + '-' + _self.IDNum.substring(12,14))
-                    }
-                    if (value.value == '性别和民族') {
-                        $content.find('.content-text').val(_self.IDNum.substring(16,17) % 2 == 0 ? '女' : '男');
-                    }
-                    
                 }else {
                     var $option = $('<option value="' + value.key + '">' + value.value + '</option>');
                 }
@@ -331,7 +365,9 @@ $(function(){
             $('.cancel-check').on('click', function(){
                 if(_self.selectIndex > -1) {
                     var objects = _self.canvas.getObjects();
+                    var newobjects = _self.newCanvas.getObjects();
                     _self.canvas.remove(objects[_self.selectIndex]);
+                    _self.newCanvas.remove(newobjects[_self.selectIndex]);
                     $('.form-area-content').eq(_self.selectIndex).remove();
                     $('.num-circle').eq(_self.selectIndex).remove();
                     for(var i=_self.selectIndex; i < objects.length; i++) {
@@ -360,6 +396,9 @@ $(function(){
                 _self.canvas.getObjects().forEach(function(item) {
                     _self.canvas.remove(item);
                 })
+                _self.newCanvas.getObjects().forEach(function(item) {
+                    _self.newCanvas.remove(item);
+                })
                 _self.count = 0;
             })
         },
@@ -381,6 +420,7 @@ $(function(){
             $('.upload-btn').off('click');
             $('.upload-btn').on('click', function(){
                 var objects = _self.canvas.getObjects();
+                console.log(objects)
                 _self.invoiceArray = [];
                 var typeArr = [];
                 if(objects.length < 1) {
@@ -565,9 +605,9 @@ $(function(){
         },
 
     }
-    // invoiceAnnotation.invoiceTypeAjax();
-    invoiceAnnotation.init();
-    invoiceAnnotation.initImage();
+    invoiceAnnotation.invoiceTypeAjax();
+    // invoiceAnnotation.init();
+    // invoiceAnnotation.initImage();
 })
 
 
